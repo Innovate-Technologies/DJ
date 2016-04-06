@@ -22,6 +22,7 @@ if (!process.env.username) {
     process.exit(1)
 }
 
+const engine = process.env.DJEngine ? process.env.DJEngine : "liquidsoap"
 
 global.at = require("node-at")
 global.Cron = require("cron").CronJob
@@ -32,7 +33,6 @@ require("http").createServer(app).listen(80);
 
 const itframe = requireFromRoot("components/itframe/api.js")
 const wait = require("wait.for")
-const liveInput = requireFromRoot("components/cast/shoutcast.js") // TO DO: move to DROdio
 
 wait.launchFiber(() => {
     global.isWritingQueue = true
@@ -40,8 +40,7 @@ wait.launchFiber(() => {
     console.log("Copyright 2015-2016 Innovate Technologies")
     console.log("------------------------------------")
     global.config = wait.for(itframe.getConfig, process.env.username)
-    liveInput.listenOn(global.config.input.SHOUTcast + 1) // TO DO: move to DROdio
-    global.connection = requireFromRoot("components/drodio/connect.js")() // TO DO: make modular
+    global.connection = requireFromRoot("components/" + engine + "/connect.js")()
     global.connection.loadClocks()
     global.connection.start()
     global.isWritingQueue = false
