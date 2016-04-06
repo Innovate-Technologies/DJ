@@ -1,15 +1,15 @@
 udo: required
-
 language: bash
-
 services:
-    - docker
-
+- docker
 before_install:
-    - docker pull multiarch/qemu-user-static:register
-    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker pull multiarch/qemu-user-static:register
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+- docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 script:
-    - make TARGET=amd64
-    - make TARGET=armhf
-    - docker push innovate/dj
+- make TARGET=amd64
+- make TARGET=armhf
+- docker push innovate/dj
+notifications:
+  slack:
+    secure: N2uhnhWcooOaKSuxzWrbYqwXKgYU4aUL5mR9DztF22wHbepZkvXkU48Gi00Rr9TvuGpR8PL9YahPhDiLSdSqs8ZNTy6Nk1jpJvwcgmguBoqdjtzH8YrfHsiHUhZX8owh4KGgtGouFwxnIJSONt1VfXWD3vjXhuuu42MtZiwYMUr/8WXc6pl0elhduGWekzZnW/OlD1KuLfOwtdWP1GDpCrc74V/q/+/HbI3OR94ccyTZPxOXoyieJzAuu5TZkvPORVm8yQ0eSEVza5d2ZiMCdc1u5d4iOqjIzYZIp9PHnB+F0AAeVsWir1Ly7c7ymvSVubbBsqWevKjVcW5/+ti1KaiiJxVBe/EazT1e3mAapXi/NZXqV9Dbty22MbyffT+ve0Rrv87NGRIT9nGh8RTn3CittAv9aiMScPtkhVuhud3QjC/PttlQByRyUawZzxKWMu8RA56H2EvNaxfKLv13+kYXeJ0dqDFNW7rlPMEwZSplxMeodschra1q6cRD55buN493hikMvRQ6/eFYVVvhHlGvRXFkXFoC0PgFbTu2zViv8GxgNTUKcBku1VK5KCmbOVm7eCiDBw85CHWc8SScM2nsK8DbEd/ZfFepqthSvrC0kHD/ckGnTIfmJ6LT1r3aE7lsMFvlc64nLVgPW74FHRPzKfzIYLspe/EfsLZ/zvc=
