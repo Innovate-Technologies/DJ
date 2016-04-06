@@ -1,0 +1,5 @@
+node_modules/
+test.mp3
+bin/
+.DS_store
+components/drodio
