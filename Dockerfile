@@ -8,7 +8,6 @@ RUN cd /dj && npm install && ./node_modules/.bin/babel ./ -d bin --minified --ig
 ENV username=""
 ENV DEBUG="true"
 ENV compiled="true"
-ENV UltraVerboseImGonnaDie=""
 
 EXPOSE 80
 
