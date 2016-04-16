@@ -5,7 +5,7 @@ module.exports.getConfig = (username, callback) => {
 		timeout: 100000,
 		data: {
 			username: username,
-			token: global.env.ITFrameToken,
+			token: process.env.ITFrameToken,
 		},
 	}).on("complete", (body) => {
 		callback(null, body);
