@@ -91,7 +91,9 @@ var addSongInfo = function (id, callback) {
         if (err) {
             return callback(err)
         }
-        songsForID[id] = res
+        if (res.available) {
+            songsForID[id] = res
+        }
         callback(null)
     })
 }

@@ -27,8 +27,8 @@ const engine = process.env.DJEngine ? process.env.DJEngine : "liquidsoap"
 global.at = require("node-at")
 global.Cron = require("cron").CronJob
 
-import express from "express"
-let app = express();
+const express = require("express")
+var app = express();
 require("http").createServer(app).listen(80);
 
 const itframe = requireFromRoot("components/itframe/api.js")
