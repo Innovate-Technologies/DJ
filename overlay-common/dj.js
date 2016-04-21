@@ -5,7 +5,7 @@ if (!process.env.compiled) {
 
 global.debug = function (log) {
     if (process.env.DEBUG) {
-        console.log("[" + new Date().toTimeString() + "] " + log);
+        console.log("[" + new Date().toLocaleTimeString() + "] " + log);
     }
 }
 
