@@ -1,6 +1,7 @@
 module.exports = ({app}) => {
     app.use(function (req, res, next) {
         res.setHeader("X-Powered-By", "DJ/" + global.config.version.DJ)
+        res.setHeader("server", "DJ/" + global.config.version.DJ)
         next();
     });
     app.use("/private/:key/", (req, res, next) => {
