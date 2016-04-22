@@ -1,5 +1,5 @@
-module.exports = ({app}) => {
-    app.use(function (req, res, next) {
+export default ({app}) => {
+    app.use((req, res, next) => {
         res.setHeader("X-Powered-By", "DJ/" + global.config.version.DJ)
         res.setHeader("server", "DJ/" + global.config.version.DJ)
         next();

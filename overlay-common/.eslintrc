@@ -2,7 +2,7 @@
     "parser": "babel-eslint",
     "rules": {
         // Clean code and best practices
-        //"indent": [2, 4, { "SwitchCase": 1 }],
+        "indent": [2, 4, { "SwitchCase": 1 }],
         "quotes": [2, "double", "avoid-escape"],
         "linebreak-style": [2, "unix"],
         "semi": 0,
@@ -99,9 +99,11 @@
 
     // Globals
     "globals": {
-        "requireFromRoot": true,
         "debug": true,
-        "config": true
+        "config": true,
+        "at": true,
+        "cron": true,
+        "requireFromRoot": true
     },
 
     // Extend the default recommended configuration

@@ -4,3 +4,4 @@ bin/
 .DS_store
 components/drodio
 crossfade.sh
+config.json

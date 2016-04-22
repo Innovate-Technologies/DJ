@@ -1,28 +1,23 @@
-const itframe = requireFromRoot("components/itframe/api.js")
-const wait = require("wait.for")
-const _ = require("underscore")
-const queue = require("queue-async")
+import { getIntervals, getSongInfo } from "../itframe/api.js"
+import _ from "underscore"
 
 var songsForID = {}
 
-module.exports = (songsList, callback) => {
-    wait.launchFiber(() => {
-        var intervals = wait.for(itframe.getIntervals)
-        var currentIntervals = selectCurrentIntervals(intervals)
-        debug(currentIntervals)
-        if (currentIntervals.length > 0) {
-            for (var interval of currentIntervals) {
-                var q = queue(10);
-                for (var songID of interval.songs) {
-                    q.defer(addSongInfo, songID)
-                }
-                wait.for(q.awaitAll)
-                songsList = insertInterval(songsList, interval)
+export default async (songsList) => {
+    var intervals = await getIntervals()
+    var currentIntervals = selectCurrentIntervals(intervals)
+    debug(currentIntervals)
+    if (currentIntervals.length > 0) {
+        for (let interval of currentIntervals) {
+            let promises = []
+            for (let songID of interval.songs) {
+                promises.push(addSongInfo(songID))
             }
-            return callback(null, songsList);
+            await Promise.all(promises)
+            songsList = insertInterval(songsList, interval)
         }
-        callback(null, songsList);
-    })
+    }
+    return songsList
 }
 var selectCurrentIntervals = (intervals) => {
     var currentIntervals = []
@@ -41,7 +36,7 @@ var selectCurrentIntervals = (intervals) => {
 }
 
 
-var insertInterval = function (playlist, {songs, intervalType, songsAtOnce, every, intervalMode}) {
+const insertInterval = function (playlist, {songs, intervalType, songsAtOnce, every, intervalMode}) {
     let count = 0
     let orderCount = 0
     let newPlaylist = []
@@ -86,14 +81,18 @@ var insertInterval = function (playlist, {songs, intervalType, songsAtOnce, ever
     return newPlaylist
 }
 
-var addSongInfo = function (id, callback) {
-    itframe.getSongInfo(id, (err, res) => {
-        if (err) {
-            return callback(err)
+/* let addSongInfo = (id) => new Promise((resolve) => {
+    getSongInfo(id).then((info) => {
+        if (info.available) {
+            songsForID[id] = info
         }
-        if (res.available) {
-            songsForID[id] = res
-        }
-        callback(null)
+        resolve(true)
     })
-}
+})*/
+
+const addSongInfo = (id) => getSongInfo(id).then(info => {
+    if (info.available) {
+        songsForID[id] = info
+    }
+    return true
+})

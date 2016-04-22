@@ -24,11 +24,15 @@
     "express": "^4.13.3",
     "mp3-parser": "^0.2.5",
     "node-at": "^0.1.0",
+    "promisify": "0.0.3",
     "queue-async": "^1.0.7",
     "restler": "~3.4.0",
     "rimraf": "^2.4.4",
     "underscore": "~1.8.3",
     "wait.for": "^0.6.6"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-eslint": "^6.0.0-beta.6",
+    "eslint": "^2.8.0"
+  }
 }
