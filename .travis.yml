@@ -8,7 +8,7 @@ before_install:
 - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 script:
 - make TARGET=amd64
-- make TARGET=armhf
+- travis_wait 40 make TARGET=armhf
 - docker push innovate/dj
 notifications:
   slack:
