@@ -3,12 +3,16 @@ import express from "express"
 
 global.isWritingQueue = false;
 
-if (!process.env.username) {
+if (process.env.username) {
+    global.djconfig.username = process.env.username
+}
+
+if (!global.djconfig.username) {
     console.log("No username passed")
     process.exit(1)
 }
 
-const engine = process.env.DJEngine ? process.env.DJEngine : "liquidsoap"
+const engine = global.djconfig.DJEngine ? global.djconfig.DJEngine : "liquidsoap"
 
 global.at = require("node-at")
 global.cron = require("cron").CronJob
@@ -23,7 +27,7 @@ require("http").createServer(app).listen(8080);
         console.log("     _____        ___    \n    /  /::\\      /  /\\   \n   /  /:/\\:\\    /  /:/   \n  /  /:/  \\:\\  /__/::\\   \n /__/:/ \\__\\:| \\__\\/\\:\\  \n \\  \\:\\ /  /:/    \\  \\:\\ \n  \\  \\:\\  /:/      \\__\\:\\\n   \\  \\:\\/:/       /  /:/\n    \\  \\::/       /__/:/ \n     \\__\\/        \\__\\/  \n                         \n")
         console.log("Copyright 2015-2016 Innovate Technologies")
         console.log("------------------------------------")
-        global.config = getConfig(process.env.username)
+        global.config = getConfig(global.djconfig.username)
         console.log(global.config)
         global.connection = requireFromRoot("components/" + engine + "/connect.js")()
         global.connection.loadClocks()

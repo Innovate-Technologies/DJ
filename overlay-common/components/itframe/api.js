@@ -5,7 +5,7 @@ export const getConfig = (username) => new Promise((resolve, reject) => {
         timeout: 100000,
         data: {
             username: username,
-            token: process.env.ITFrameToken,
+            token: global.djconfig.ITFrameToken,
         },
     }).on("complete", body => resolve(body)).on("error", err => reject(err)).on("timeout", err => reject(err))
 })
