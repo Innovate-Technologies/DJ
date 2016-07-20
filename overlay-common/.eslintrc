@@ -103,7 +103,8 @@
         "config": true,
         "at": true,
         "cron": true,
-        "requireFromRoot": true
+        "requireFromRoot": true,
+        "connection": true,
     },
 
     // Extend the default recommended configuration

@@ -27,11 +27,11 @@ require("http").createServer(app).listen(8080);
         console.log("     _____        ___    \n    /  /::\\      /  /\\   \n   /  /:/\\:\\    /  /:/   \n  /  /:/  \\:\\  /__/::\\   \n /__/:/ \\__\\:| \\__\\/\\:\\  \n \\  \\:\\ /  /:/    \\  \\:\\ \n  \\  \\:\\  /:/      \\__\\:\\\n   \\  \\:\\/:/       /  /:/\n    \\  \\::/       /__/:/ \n     \\__\\/        \\__\\/  \n                         \n")
         console.log("Copyright 2015-2016 Innovate Technologies")
         console.log("------------------------------------")
-        global.config = getConfig(global.djconfig.username)
+        config = getConfig(global.djconfig.username)
         console.log(global.config)
-        global.connection = requireFromRoot("components/" + engine + "/connect.js")()
-        global.connection.loadClocks()
-        global.connection.start()
+        connection = requireFromRoot("components/" + engine + "/connect.js")()
+        connection.loadClocks()
+        connection.start()
         global.isWritingQueue = false
     } catch (err) {
         debug(err)
