@@ -10,12 +10,18 @@ export default ({app}) => {
         }
         next();
     })
+
+    app.get("/private/:key/queue", (req, res) => {
+        res.json(connection.getQueue())
+    })
+
     app.post("/private/:key/song/skip", (req, res) => {
         global.connection.skip()
-        res.send({status: "ok"})
+        res.json({status: "ok"})
     })
+
     app.post("/private/:key/clocks/reload", (reqq, res) => {
         global.connection.reloadClocks()
-        res.send({status: "ok"})
+        res.json({status: "ok"})
     })
 }
