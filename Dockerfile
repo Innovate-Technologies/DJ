@@ -1,5 +1,5 @@
-#FROM multiarch/ubuntu-core:armhf-xenial # arch=armhf
-#FROM multiarch/ubuntu-core:amd64-xenial # arch=amd64
+#FROM meyskens/ubuntu-multiarch:armhf-xenial # arch=armhf
+#FROM meyskens/ubuntu-multiarch:amd64-xenial # arch=amd64
 
 RUN apt-get update && apt-get -y upgrade && apt-get -y install git sudo curl unattended-upgrades python build-essential && curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash - && apt-get -f -y install nodejs
 
