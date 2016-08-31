@@ -29,9 +29,12 @@ var fs = require("fs");
 try {
     global.djconfig = JSON.parse(fs.readFileSync(global.appRoot + "/config.json", "utf8"));
 } catch (error) {
-    console.error("Failed to load the config file. Are you sure you have a valid config.json?");
-    console.error("The error was:", error.message);
-    process.exit(1);
+    if (!process.env.username) {
+        console.error("Failed to load the config file. Are you sure you have a valid config.json?");
+        console.error("The error was:", error.message);
+        process.exit(1);
+    }
+    global.djconfig = process.env
 }
 
 require("./dj.js");
