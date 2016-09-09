@@ -27,7 +27,7 @@ require("http").createServer(app).listen(8080);
         console.log("     _____        ___    \n    /  /::\\      /  /\\   \n   /  /:/\\:\\    /  /:/   \n  /  /:/  \\:\\  /__/::\\   \n /__/:/ \\__\\:| \\__\\/\\:\\  \n \\  \\:\\ /  /:/    \\  \\:\\ \n  \\  \\:\\  /:/      \\__\\:\\\n   \\  \\:\\/:/       /  /:/\n    \\  \\::/       /__/:/ \n     \\__\\/        \\__\\/  \n                         \n")
         console.log("Copyright 2015-2016 Innovate Technologies")
         console.log("------------------------------------")
-        global.config = getConfig(global.djconfig.username)
+        global.config = await getConfig(global.djconfig.username)
         console.log(global.config)
         connection = requireFromRoot("components/" + engine + "/connect.js")()
         connection.loadClocks()
