@@ -29,7 +29,7 @@ require("http").createServer(app).listen(8080);
         console.log("------------------------------------")
         global.config = await getConfig(global.djconfig.username)
         console.log(global.config)
-        connection = requireFromRoot("components/" + engine + "/connect.js")()
+        global.connection = requireFromRoot("components/" + engine + "/connect.js")()
         connection.loadClocks()
         connection.start()
         global.isWritingQueue = false

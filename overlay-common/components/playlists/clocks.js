@@ -2,6 +2,7 @@ import { getClocks, getMusicForTag } from "../itframe/api"
 import _ from "underscore"
 
 module.exports = async () => {
+    debug("Loading clocks")
     const clocks = await getClocks()
     const currentClock = selectCurrentClock(clocks)
     debug(currentClock)
@@ -10,6 +11,7 @@ module.exports = async () => {
         songs[tag.tag] = await getMusicForTag(tag.tag)
     }
     const next100Songs = generatePlaylist(currentClock.tags, songs)
+    debug("Clocks ready")
     return next100Songs
 }
 
@@ -39,11 +41,15 @@ var selectCurrentClock = (clocks) => {
 
     for (var id in clocks) {
         if (clocks.hasOwnProperty(id)) {
-            new global.Cron(clocks[id].start.minute + " " + clocks[id].start.hour + " * * " + clocks[id].start.dayOfWeek, reload, null, true);
+            debug(clocks[id].end.dayOfWeek > dayOfWeek)
+            // new global.Cron(clocks[id].start.minute + " " + clocks[id].start.hour + " * * " + clocks[id].start.dayOfWeek, reload, null, true);
             if (clocks[id].end.dayOfWeek > dayOfWeek) {
+                debug("clocks[id].end.dayOfWeek > dayOfWee")
                 if ((id - 1) < 0) {
+                    debug("This clock")
                     return clocks[id]
                 }
+                debug("Went one clock too far, going back")
                 return clocks[id - 1]
 
             } else if (clocks[id].end.dayOfWeek === dayOfWeek) {
@@ -57,7 +63,7 @@ var selectCurrentClock = (clocks) => {
             }
         }
     }
-
+    debug("crap, It's a null")
     return null
 }
 

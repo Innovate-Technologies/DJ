@@ -25,7 +25,7 @@ export const getConfig = (username) => new Promise((resolve, reject) => {
 
 
 const getFromITFrame = (query) => new Promise((resolve, reject) => {
-    rest.post(`https://itframe.innovatete.ch/dj/${global.config.username}/${global.config.internal.dj.key}/${query}`, {
+    rest.get(`https://itframe.innovatete.ch/dj/${global.config.username}/${global.config.internal.dj.key}/${query}`, {
         timeout: 100000,
     }).on("complete", body => resolve(body)).on("timeout", err => reject(err))
 })
@@ -48,4 +48,8 @@ export const getClocks = async () => {
 
 export const getIntervals = async () => {
     return await getFromITFrame("all-intervals")
+}
+
+export const getSeparationRules = async () => {
+    return await getFromITFrame("separation-rules")
 }
