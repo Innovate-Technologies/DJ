@@ -8,12 +8,11 @@ build: tmp-$(TARGET)/Dockerfile
 	docker run --rm innovate/dj:$(TARGET)-latest uname -a
 
 
-tmp-$(TARGET)/Dockerfile: Dockerfile $(shell find overlay-common overlay-$(TARGET))
+tmp-$(TARGET)/Dockerfile: Dockerfile $(shell find src)
 	rm -rf tmp-$(TARGET)
 	mkdir tmp-$(TARGET)
 	cp Dockerfile $@
-	cp -rf overlay-common tmp-$(TARGET)/
-	cp -rf overlay-$(TARGET) tmp-$(TARGET)/
+	cp -rf src tmp-$(TARGET)/
 	for arch in $(ARCHS); do                     \
 	  if [ "$$arch" != "$(TARGET)" ]; then       \
 	    sed -i "/arch=$$arch/d" $@;              \
