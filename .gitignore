@@ -2,6 +2,6 @@ node_modules/
 test.mp3
 bin/
 .DS_store
-components/drodio
+src/components/drodio
 crossfade.sh
 config.json
