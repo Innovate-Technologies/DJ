@@ -78,9 +78,11 @@ var generatePlaylist = function (tags, songsForTag) {
                 debug("Adding " + songsForTag[tag.tag][i]._id)
                 playlist.push(songsForTag[tag.tag][i])
             } else {
-                var song = songsForTag[tag.tag][Math.floor((Math.random() * songsForTag[tag.tag].length))]
-                debug("Adding random song " + song._id)
-                playlist.push(song)
+                var song = songsForTag[tag.tag][Math.floor((Math.random() * (songsForTag[tag.tag].length - 1) ))]
+                if (song) {
+                    debug("Adding random song " + song._id)
+                    playlist.push(song)
+                }
             }
         }
     }
