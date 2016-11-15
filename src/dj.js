@@ -14,9 +14,6 @@ if (!global.djconfig.username) {
 
 const engine = global.djconfig.DJEngine ? global.djconfig.DJEngine : "liquidsoap"
 
-global.at = require("node-at")
-global.cron = require("cron").CronJob
-
 const app = express();
 require("http").createServer(app).listen(8080);
 
@@ -29,6 +26,14 @@ require("http").createServer(app).listen(8080);
         console.log("------------------------------------")
         global.config = await getConfig(global.djconfig.username)
         console.log(global.config)
+
+        if (global.config.timezone) {
+            process.env.TZ = global.config.timezone
+        }
+        // making sure Date() isn't called till now
+        global.at = require("node-at")
+        global.cron = require("cron").CronJob
+
         global.connection = requireFromRoot("components/" + engine + "/connect.js")()
         connection.loadClocks()
         connection.start()
