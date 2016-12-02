@@ -39,22 +39,22 @@ const generatePlaylist = function (tags, songsForTag) {
 }
 
 const getClockForDayHourMinute = (clocks, day, hour, minute) => {
-    for (let id in this.clocks) {
-        if (this.clocks.hasOwnProperty(id)) {
-            if (this.clocks[id].start.dayOfWeek < day && this.clocks[id].end.dayOfWeek > day) {
+    for (let id in clocks) {
+        if (clocks.hasOwnProperty(id)) {
+            if (clocks[id].start.dayOfWeek < day && clocks[id].end.dayOfWeek > day) {
                 // ] day [
-                return this.clocks[id];
-            } else if ((this.clocks[id].start.dayOfWeek === day || this.clocks[id].end.dayOfWeek === day)) {
+                return clocks[id];
+            } else if ((clocks[id].start.dayOfWeek === day || clocks[id].end.dayOfWeek === day)) {
                 // [ day ]
-                if ((this.clocks[id].start.dayOfWeek === day && this.clocks[id].start.hour <= hour) || (this.clocks[id].end.dayOfWeek === day && this.clocks[id].end.hour >= hour)) {
+                if ((clocks[id].start.dayOfWeek === day && clocks[id].start.hour <= hour) || (clocks[id].end.dayOfWeek === day && clocks[id].end.hour >= hour)) {
                     // check end minutes
                     // [ day ] [ hour ]
-                    if (this.clocks[id].start.hour < hour && this.clocks[id].end.hour > hour) {
+                    if (clocks[id].start.hour < hour && clocks[id].end.hour > hour) {
                         // ] hour [
-                        return this.clocks[id];
-                    } else if ((this.clocks[id].start.hour === hour && this.clocks[id].start.minute >= minute) || (this.clocks[id].end.hour === hour && this.clocks[id].end.minute >= minute)) {
+                        return clocks[id];
+                    } else if ((clocks[id].start.hour === hour && clocks[id].start.minute >= minute) || (clocks[id].end.hour === hour && clocks[id].end.minute >= minute)) {
                         // [ day ] [ hour ] [ minute ]
-                        return this.clocks[id];
+                        return clocks[id];
                     }
                 }
             }
