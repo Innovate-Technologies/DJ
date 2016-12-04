@@ -3,9 +3,13 @@ import _ from "underscore"
 
 export default async () => {
     const now = new Date()
+    let day = now.getDay()
+    if (day === 0) { // sunday is 7 in our system not 0
+        day = 7
+    }
     debug("Loading clocks")
     const clocks = await getClocks()
-    const currentClock = getClockForDayHourMinute(clocks, now.getDay(), now.getHours(), now.getMinutes())
+    const currentClock = getClockForDayHourMinute(clocks, day, now.getHours(), now.getMinutes())
     debug(currentClock)
     const songs = {}
     for (let tag of currentClock.tags) {
