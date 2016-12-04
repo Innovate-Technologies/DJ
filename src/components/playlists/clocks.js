@@ -2,9 +2,10 @@ import { getClocks, getMusicForTag } from "../itframe/api"
 import _ from "underscore"
 
 export default async () => {
+    const now = new Date()
     debug("Loading clocks")
     const clocks = await getClocks()
-    const currentClock = getClockForDayHourMinute(clocks, new Date().getDay(), new Date().getHours(), new Date().getMinutes())
+    const currentClock = getClockForDayHourMinute(clocks, now.getDay(), now.getHours(), now.getMinutes())
     debug(currentClock)
     const songs = {}
     for (let tag of currentClock.tags) {
