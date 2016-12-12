@@ -4,24 +4,24 @@ export default ({app, io}) => {
         res.setHeader("server", "DJ/" + global.config.version.DJ)
         next();
     });
-    app.use("/private/:key/", (req, res, next) => {
-        if (req.params.key !== global.config.internal.dj.key) {
+    app.use("/api/:key/*", (req, res, next) => {
+        if (req.params.key !== global.config.apikey) {
             return res.status(401).send({status: "error", error: "Invalid key"})
         }
         next();
-    })
+    });
 
-    app.get("/private/:key/queue", (req, res) => {
+    app.get("/api/:key/queue", (req, res) => {
         res.json(connection.getQueue())
     })
 
-    app.post("/private/:key/song/skip", (req, res) => {
-        global.connection.skip()
+    app.post("/api/:key/song/skip", (req, res) => {
+        global.connection.skipSong()
         res.json({status: "ok"})
     })
 
-    app.post("/private/:key/clocks/reload", (reqq, res) => {
-        global.connection.reloadClocks()
+    app.post("/api/:key/clocks/reload", (req, res) => {
+        global.queueManager.reloadClocks()
         res.json({status: "ok"})
     })
 }
