@@ -1,28 +1,25 @@
-import { getIntervals, getSongInfo } from "../itframe/api.js"
+import { getIntervals } from "../itframe/api.js"
 import _ from "underscore"
 
 export default async (songsList) => {
     const intervals = await getIntervals()
     const currentIntervals = selectCurrentIntervals(intervals)
-    debug(currentIntervals)
+
     if (currentIntervals.length > 0) {
         for (let interval of currentIntervals) {
-            insertInterval(songsList, interval)
+            songsList = insertInterval(songsList, interval)
         }
     }
+
     return songsList
 }
-var selectCurrentIntervals = (intervals) => {
-    var currentIntervals = []
-    for (var interval of intervals) {
-        if (interval.forever) {
+const selectCurrentIntervals = (intervals) => {
+    const now = new Date()
+    const currentIntervals = []
+    for (let interval of intervals) {
+        if (new Date(interval.start) < now && (new Date(interval.end) > now || interval.forever)) {
+            debug("Use interval " + interval.name)
             currentIntervals.push(interval)
-        } else {
-            var now = new Date()
-            if (interval.start < now && (interval.end > now || interval.forever)) {
-                debug("Use interval " + interval.name)
-                currentIntervals.push(interval)
-            }
         }
     }
     return currentIntervals
@@ -32,13 +29,13 @@ var selectCurrentIntervals = (intervals) => {
 const insertInterval = function (playlist, {songs, intervalType, songsAtOnce, every, intervalMode}) {
     let count = 0
     let orderCount = 0
-    let newPlaylist = []
+    const newPlaylist = []
 
     if (songs.length === 0) {
         return playlist
     }
 
-    for (var song of playlist) {
+    for (let song of playlist) {
         newPlaylist.push(song)
         if (intervalMode === "songs") {
             count++
@@ -47,25 +44,26 @@ const insertInterval = function (playlist, {songs, intervalType, songsAtOnce, ev
         }
 
         if (count >= every) {
-            for (var i = 0; i < songsAtOnce; i++) {
-                var intervalSong
-                if (intervalType === "random") {
-                    intervalSong = _.shuffle(songs)[0]
-                    intervalSong.ignoreSeperation = true;
-                    newPlaylist.push(intervalSong)
-                } else if (intervalType === "order") {
-                    intervalSong = songs[orderCount]
-                    intervalSong.ignoreSeperation = true;
-                    newPlaylist.push(intervalSong)
-                    orderCount++
-                    if (orderCount >= songs.length) {
-                        orderCount = 0
+            if (intervalType === "all") {
+                for (let songInInterval of songs) {
+                    songInInterval.ignoreSeperation = true;
+                    newPlaylist.push(songInInterval)
+                }
+            } else {
+                for (let i = 0; i < songsAtOnce; i++) {
+                    let songInInterval
+                    if (intervalType === "random") {
+                        songInInterval = _.shuffle(songs)[0]
+                        songInInterval.ignoreSeperation = true;
                     }
-                } else if (intervalType === "all") {
-                    for (var songInterval of songs) {
-                        songInterval.ignoreSeperation = true;
-                        newPlaylist.push(songInterval)
+                    if (intervalType === "order") {
+                        songInInterval = songs[orderCount]
+                        orderCount++
+                        if (orderCount >= songs.length) {
+                            orderCount = 0
+                        }
                     }
+                    newPlaylist.push(songInInterval)
                 }
             }
             count = 0
