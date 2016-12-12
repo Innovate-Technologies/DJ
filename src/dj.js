@@ -13,7 +13,7 @@ if (!global.djconfig.username) {
 const engine = global.djconfig.DJEngine ? global.djconfig.DJEngine : "liquidsoap"
 
 const app = express();
-require("http").createServer(app).listen(8080);
+require("http").createServer(app).listen(80);
 
 
 (async () => {
