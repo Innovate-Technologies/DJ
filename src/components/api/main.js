@@ -55,7 +55,7 @@ const getCurrentSong = () => {
     const currentSong = JSON.parse(JSON.stringify(global.queueManager.currentSong)) // dirty clone
     currentSong.internalURL = null
     currentSong.processedURLS = null
-    return
+    return currentSong
 }
 
 const getQueue = () => {
@@ -66,4 +66,5 @@ const getQueue = () => {
             queue[id].processedURLS = null
         }
     }
+    return queue
 }
