@@ -1,6 +1,6 @@
 import express from "express"
 import { getConfig } from "./components/itframe/api"
-import * as apiServer from "./components/api/main.js"
+import apiServer from "./components/api/main.js"
 
 if (process.env.username) {
     global.djconfig.username = process.env.username
