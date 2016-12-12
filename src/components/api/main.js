@@ -12,7 +12,14 @@ export default ({app, io}) => {
     });
 
     app.get("/api/:key/queue", (req, res) => {
-        res.json(connection.getQueue())
+        const queue = JSON.parse(JSON.stringify(global.queueManager.queue)) // dirty clone
+        for (let id in queue) {
+            if (queue.hasOwnProperty(id)) {
+                queue[id].internalURL = null
+                queue[id].processedURLS = null
+            }
+        }
+        res.json(queue)
     })
 
     app.post("/api/:key/song/skip", (req, res) => {
