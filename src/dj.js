@@ -1,5 +1,6 @@
 import express from "express"
 import { getConfig } from "./components/itframe/api"
+import * as apiServer from "./components/api/main.js"
 
 if (process.env.username) {
     global.djconfig.username = process.env.username
@@ -13,7 +14,8 @@ if (!global.djconfig.username) {
 const engine = global.djconfig.DJEngine ? global.djconfig.DJEngine : "liquidsoap"
 
 const app = express();
-require("http").createServer(app).listen(80);
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 
 
 (async () => {
@@ -37,6 +39,8 @@ require("http").createServer(app).listen(80);
 
         global.connection = requireFromRoot("components/" + engine + "/connect.js")()
         connection.start()
+        http.listen(80)
+        apiServer({ app, io })
     } catch (err) {
         debug(err)
     }
