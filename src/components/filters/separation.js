@@ -1,3 +1,4 @@
+import _ from "underscore";
 import { getSeparationRules } from "../itframe/api.js"
 
 export default async (list) => {
@@ -7,7 +8,6 @@ export default async (list) => {
     }
     const listOfArtist = []
     const listOfSongIDs = []
-    const listOfSummedTime = []
     if (rules.separationType === "artist") {
         for (let song of list) {
             listOfArtist.push(song.artist)
@@ -21,10 +21,6 @@ export default async (list) => {
     }
 
     for (let song of list) {
-        listOfSummedTime.push((listOfArtist[listOfArtist.length - 1] || 0) + song.duration)
-    }
-
-    for (let song of list) {
         let indexes
         if (rules.separationType === "artist") {
             indexes = getAllIndexFor(listOfArtist, song.artist)
@@ -33,18 +29,23 @@ export default async (list) => {
             indexes = getAllIndexFor(listOfSongIDs, song._id)
         }
         if (indexes.length > 1) {
-            for (let id in indexes) {
-                if (indexes.hasOwnProperty(id) && id !== 0) {
-                    let timecodePrevious = listOfSummedTime[indexes[id - 1]]
-                    let timecodeThis = listOfSummedTime[indexes[id]]
-                    if (timecodeThis - timecodePrevious < rules.interval) {
-                        // do SOMETHING!!
+            let previousIndex;
+            for (let index of indexes) {
+                if (!previousIndex) {
+                    const duration = getTimeBetween(list, previousIndex, index)
+                    if (duration >= rules.interval) {
+                        song = null
                     }
                 }
+                previousIndex = index
             }
         }
     }
-
+    const list2 = _.without(list, null)
+    if (list2.length > 5) {
+        return list2
+    }
+    return list // too many songs deleted, no separation possible!
 }
 
 const getAllIndexFor = (array, value) => {
@@ -55,4 +56,12 @@ const getAllIndexFor = (array, value) => {
         }
     }
     return returnIndex
+}
+
+const getTimeBetween = (list, index1, index2) => {
+    let duration = 0
+    for (let i = index1 + 1; i < index2; i++) {
+        duration += list[i].duration || 0
+    }
+    return duration
 }
