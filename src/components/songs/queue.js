@@ -46,7 +46,7 @@ export default () => {
         clearInterval(clocksCheckInterval)
         clocksCheckInterval = setInterval(() => {
             if (!global.queueManager.isWriting) {
-                if (global.queueManager.queue.length <= 2) {
+                if (global.queueManager.queue.length <= 5) {
                     debug("Loading in more songs")
                     global.queueManage.loadClocks()
                 }
