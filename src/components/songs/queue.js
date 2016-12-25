@@ -46,8 +46,8 @@ export default () => {
         clearInterval(clocksCheckInterval)
         clocksCheckInterval = setInterval(() => {
             if (!global.queueManager.isWriting) {
-                console.log(`oooh still ${global.queueManager.queue.length} left`)
                 if (global.queueManager.queue.length <= 5) {
+                    debug(global.queueManager.queue.length + "songs left in global queue")
                     debug("Loading in more songs")
                     global.queueManager.loadClocks()
                 }
