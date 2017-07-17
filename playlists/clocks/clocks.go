@@ -2,8 +2,10 @@ package clocks
 
 import (
 	"math/rand"
+	"strconv"
 	"time"
 
+	"github.com/innovate-technologies/DJ/cron"
 	"github.com/innovate-technologies/DJ/data"
 	"github.com/innovate-technologies/DJ/itframe"
 )
@@ -18,6 +20,23 @@ func GetSongs() (songs []data.Song) {
 	}
 	shuffle(songs)
 	return
+}
+
+// SetReloads sets the reload events when a new clock has to start
+func SetReloads() {
+	allClocks := itframe.GetAllClocks()
+	c := cron.GetInstance()
+
+	for _, clock := range allClocks {
+		c.Add(cron.Action{
+			DayOfMonth: "*",
+			Month:      "*",
+			DayOfWeek:  strconv.FormatInt(int64(clock.Start.DayOfWeek), 10),
+			Hour:       strconv.FormatInt(int64(clock.Start.Hour), 10),
+			Minute:     strconv.FormatInt(int64(clock.Start.Minute), 10),
+			Event:      "reloadQueue",
+		})
+	}
 }
 
 func getCurrentClock() data.Clock {

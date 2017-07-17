@@ -7,6 +7,7 @@ import (
 	"github.com/chuckpreslar/emission"
 	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/config"
+	"github.com/innovate-technologies/DJ/cron"
 	"github.com/innovate-technologies/DJ/itframe"
 	dummyengine "github.com/innovate-technologies/dummy-dj-engine"
 )
@@ -32,9 +33,11 @@ func main() {
 
 	engine = dummyengine.New()
 
-	// init At
+	// init At and cron
 	at.Events = events
+	cron.Events = events
 	at.GetInstance()
+	cron.GetInstance()
 
 	ReloadClocks()
 
