@@ -12,7 +12,13 @@ type Config struct {
 	Username string                       `json:"username"`
 	Internal map[string]map[string]string `json:"internal"`
 	APIKey   string                       `json:"apikey"`
-	DJ       struct {
+	Streams  []struct {
+		Stream   string `json:"stream"`
+		Password string `json:"password,omitempty"`
+		Relay    string `json:"relay,omitempty"`
+		Primary  bool   `json:"primary,omitempty"`
+	} `json:"streams"`
+	DJ struct {
 		Enabled    bool `json:"enabled"`
 		FadeLength int  `json:"fadeLength"`
 	} `json:"DJ"`
