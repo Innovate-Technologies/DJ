@@ -12,6 +12,10 @@ type Config struct {
 	Username string                       `json:"username"`
 	Internal map[string]map[string]string `json:"internal"`
 	APIKey   string                       `json:"apikey"`
+	DJ       struct {
+		Enabled    bool `json:"enabled"`
+		FadeLength int  `json:"fadeLength"`
+	} `json:"DJ"`
 }
 
 var r = resty.New().SetHostURL("https://itframe.innovatete.ch/") // TO DO: make host changable
