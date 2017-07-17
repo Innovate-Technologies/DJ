@@ -6,6 +6,8 @@ import (
 
 	"github.com/chuckpreslar/emission"
 	"github.com/innovate-technologies/DJ/data"
+	"github.com/innovate-technologies/DJ/playlists/clocks"
+	"github.com/innovate-technologies/DJ/playlists/intervals"
 )
 
 var (
@@ -17,12 +19,13 @@ var (
 
 func init() {
 	Events.On("playSong", playSong)
+	Events.On("relodClocks", ReloadClocks)
 }
 
 // LoadClocks adds the current clock to the queue
 func LoadClocks() {
 	queueMutex.Lock()
-	// append here
+	queue = append(queue, intervals.PlaceIntervals(clocks.GetSongs())...)
 	queueMutex.Unlock()
 	Events.Emit("queueUpdate")
 }
