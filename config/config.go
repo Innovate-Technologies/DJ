@@ -10,6 +10,8 @@ import (
 // Config contains the elements of the Cast config used for DJ
 type Config struct {
 	Username string                       `json:"username"`
+	Name     string                       `json:"name"`
+	Genre    string                       `json:"genre"`
 	Hostname string                       `json:"hostname"`
 	Internal map[string]map[string]string `json:"internal"`
 	APIKey   string                       `json:"apikey"`
