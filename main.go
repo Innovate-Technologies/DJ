@@ -8,7 +8,6 @@ import (
 	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/config"
 	"github.com/innovate-technologies/DJ/cron"
-	"github.com/innovate-technologies/DJ/itframe"
 	dummyengine "github.com/innovate-technologies/dummy-dj-engine"
 )
 
@@ -29,7 +28,7 @@ func main() {
 		return
 	}
 
-	conf = itframe.GetConfig(username)
+	conf = *config.GetConfig()
 
 	engine = dummyengine.New()
 

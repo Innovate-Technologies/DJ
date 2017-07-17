@@ -1,24 +1,14 @@
 package itframe
 
 import (
-	"os"
-
 	"github.com/innovate-technologies/DJ/config"
 	"github.com/innovate-technologies/DJ/data"
 	resty "gopkg.in/resty.v0"
 )
 
 // Config is the confug used for the requests
-var Config config.Config
+var Config = config.GetConfig()
 var r = resty.New().SetHostURL("https://itframe.innovatete.ch/") // TO DO: make host changable
-
-// GetConfig gets the config for a username
-func GetConfig(username string) config.Config {
-	response := config.Config{}
-	r.R().SetBody(map[string]string{"username": username, "token": os.Getenv("ITFrameToken")}).SetResult(&response).Get("/cast/config")
-
-	return response
-}
 
 func getDJPath() string {
 	return "/dj/" + Config.Username + "/" + Config.Internal["dj"]["key"]
