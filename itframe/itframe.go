@@ -55,3 +55,11 @@ func GetAllClocks() []data.Clock {
 
 	return response
 }
+
+// GetAllIntervals gives all intervals for an account
+func GetAllIntervals() []data.Interval {
+	response := []data.Interval{}
+	r.R().SetResult(response).Get(getDJPath() + "all-intervals")
+
+	return response
+}

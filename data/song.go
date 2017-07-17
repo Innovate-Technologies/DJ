@@ -28,5 +28,6 @@ type Song struct {
 		Bitrate int    `json:"bitrate"`
 		URL     string `json:"url"`
 	} `json:"processedURLS"`
-	Type string `json:"type"`
+	Type             string `json:"type"`
+	IgnoreSeperation bool   `json:"ignoreSeperation"`
 }
