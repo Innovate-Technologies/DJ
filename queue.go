@@ -4,6 +4,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/innovate-technologies/DJ/at"
+	"github.com/innovate-technologies/DJ/cron"
 	"github.com/innovate-technologies/DJ/data"
 	"github.com/innovate-technologies/DJ/playlists/clocks"
 	"github.com/innovate-technologies/DJ/playlists/intervals"
@@ -35,6 +37,7 @@ func ReloadClocks() {
 	queue = []data.Song{}
 	queueMutex.Unlock()
 	LoadClocks()
+	UpdateTimers()
 }
 
 // WatchClocks watches the queue to add songs when needed
@@ -48,6 +51,14 @@ func WatchClocks() {
 		}
 		time.Sleep(time.Second)
 	}
+}
+
+func UpdateTimers() {
+	cron.GetInstance().RemoveAll()
+	at.GetInstance().RemoveAll()
+
+	go clocks.SetReloads()
+	go intervals.SetReloads()
 }
 
 func playSong(song data.Song) {
