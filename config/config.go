@@ -23,6 +23,9 @@ type Config struct {
 		Enabled    bool `json:"enabled"`
 		FadeLength int  `json:"fadeLength"`
 	} `json:"DJ"`
+	Input struct {
+		SHOUTcast int `json:"SHOUTcast"`
+	} `json:"input"`
 }
 
 var r = resty.New().SetHostURL("https://itframe.innovatete.ch/") // TO DO: make host changable
