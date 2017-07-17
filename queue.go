@@ -19,7 +19,7 @@ var (
 
 func init() {
 	Events.On("playSong", playSong)
-	Events.On("relodClocks", ReloadClocks)
+	Events.On("reloadQueue", ReloadClocks)
 }
 
 // LoadClocks adds the current clock to the queue
