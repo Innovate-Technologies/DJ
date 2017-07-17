@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"log"
-	"net/http"
 
 	socketio "github.com/googollee/go-socket.io"
+	"github.com/labstack/echo"
 )
 
 func startServer() {
@@ -13,12 +13,11 @@ func startServer() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	io.Of("/queueEvents").On("connection", handleQueueEvents)
 
-	http.Handle("/socket.io/", io)
-
-	log.Fatal(http.ListenAndServe(":80", nil))
+	e := echo.New()
+	e.Any("/socket.io/*", echo.WrapHandler(io))
+	e.Logger.Fatal(e.Start(":80"))
 }
 
 func handleQueueEvents(socket socketio.Socket) {
