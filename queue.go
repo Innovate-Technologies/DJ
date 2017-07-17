@@ -11,8 +11,9 @@ import (
 )
 
 var (
-	queue      = []data.Song{}
-	queueMutex = sync.Mutex{}
+	queue       = []data.Song{}
+	queueMutex  = sync.Mutex{}
+	currentSong data.Song
 	// Events is the global event emitter
 	Events *emission.Emitter
 )
@@ -54,6 +55,7 @@ func WatchClocks() {
 func playSong(song data.Song) {
 	queueMutex.Lock()
 	if song.ID == queue[0].ID {
+		currentSong = song
 		queue = queue[1:]
 	}
 	queueMutex.Unlock()
