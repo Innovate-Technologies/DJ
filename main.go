@@ -8,12 +8,14 @@ import (
 	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/config"
 	"github.com/innovate-technologies/DJ/itframe"
+	dummyengine "github.com/innovate-technologies/dummy-dj-engine"
 )
 
 var (
 	username = os.Getenv("username")
 	conf     config.Config
 	events   = emission.NewEmitter()
+	engine   Engine
 )
 
 func main() {
@@ -28,9 +30,13 @@ func main() {
 
 	conf = itframe.GetConfig(username)
 
+	engine = dummyengine.New()
+
 	// init At
 	at.Events = events
 	at.GetInstance()
+
+	ReloadClocks()
 
 	startServer()
 }

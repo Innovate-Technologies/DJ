@@ -21,6 +21,7 @@ var (
 func init() {
 	Events.On("playSong", playSong)
 	Events.On("reloadQueue", ReloadClocks)
+	Events.On("queueUpdate", updateEngines)
 }
 
 // LoadClocks adds the current clock to the queue
@@ -58,5 +59,11 @@ func playSong(song data.Song) {
 		currentSong = song
 		queue = queue[1:]
 	}
+	queueMutex.Unlock()
+}
+
+func updateEngines() {
+	queueMutex.Lock()
+	engine.PutQueue(queue)
 	queueMutex.Unlock()
 }
