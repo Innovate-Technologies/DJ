@@ -4,4 +4,5 @@ package config
 type Config struct {
 	Username string                       `json:"username"`
 	Internal map[string]map[string]string `json:"internal"`
+	APIKey   string                       `json:"apikey"`
 }

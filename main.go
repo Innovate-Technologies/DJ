@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/chuckpreslar/emission"
+	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/config"
 	"github.com/innovate-technologies/DJ/itframe"
 )
@@ -27,4 +28,9 @@ func main() {
 
 	conf = itframe.GetConfig(username)
 
+	// init At
+	at.Events = events
+	at.GetInstance()
+
+	startServer()
 }
