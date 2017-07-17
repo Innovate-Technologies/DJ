@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/data"
 	"github.com/innovate-technologies/DJ/itframe"
 )
@@ -16,6 +17,23 @@ func PlaceIntervals(songs []data.Song) []data.Song {
 	}
 
 	return songs
+}
+
+// SetReloads set the queue to reload when an interval stops playing
+func SetReloads() {
+	allIntervals := itframe.GetAllIntervals()
+	a := at.GetInstance()
+
+	for _, interval := range allIntervals {
+		a.Add(at.Action{
+			Event: "reloadQueue",
+			Time:  interval.Start,
+		})
+		a.Add(at.Action{
+			Event: "reloadQueue",
+			Time:  interval.End,
+		})
+	}
 }
 
 func getCurrentIntervals() []data.Interval {
