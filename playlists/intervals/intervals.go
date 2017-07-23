@@ -112,11 +112,12 @@ func getIntervalSongs(interval data.Interval, orderCount *int) (songs []data.Son
 	return
 }
 
-func shuffle(slc []data.Song) {
-	for i := 1; i < len(slc); i++ {
-		r := rand.Intn(i + 1)
-		if i != r {
-			slc[r], slc[i] = slc[i], slc[r]
-		}
+func shuffle(vals []data.Song) {
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	for len(vals) > 0 {
+		n := len(vals)
+		randIndex := r.Intn(n)
+		vals[n-1], vals[randIndex] = vals[randIndex], vals[n-1]
+		vals = vals[:n-1]
 	}
 }
