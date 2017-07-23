@@ -2,7 +2,6 @@ package config
 
 import (
 	"os"
-	"sync"
 
 	resty "gopkg.in/resty.v0"
 )
@@ -32,14 +31,13 @@ type Config struct {
 
 var r = resty.New().SetHostURL("https://itframe.innovatete.ch/") // TO DO: make host changable
 var instance *Config
-var once sync.Once
 
 // GetConfig gives you the config for DJ
 func GetConfig() *Config {
-	once.Do(func() {
+	if instance == nil {
 		response := Config{}
-		r.R().SetBody(map[string]string{"username": os.Getenv("username"), "token": os.Getenv("ITFrameToken")}).SetResult(&response).Get("/cast/config")
+		r.R().SetHeader("Content-Type", "application/json").SetBody(map[string]string{"username": os.Getenv("username"), "token": os.Getenv("ITFrameToken")}).SetResult(&response).Post("/cast/config")
 		instance = &response
-	})
+	}
 	return instance
 }
