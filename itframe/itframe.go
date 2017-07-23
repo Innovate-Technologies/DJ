@@ -41,7 +41,7 @@ func GetAllSongsForTag(tag string) []data.Song {
 // GetAllClocks gives the clocks for the account
 func GetAllClocks() []data.Clock {
 	response := []data.Clock{}
-	r.R().SetResult(response).Get(getDJPath() + "all-clocks")
+	r.R().SetResult(&response).Get(getDJPath() + "/all-clocks")
 
 	return response
 }
@@ -49,7 +49,7 @@ func GetAllClocks() []data.Clock {
 // GetAllIntervals gives all intervals for an account
 func GetAllIntervals() []data.Interval {
 	response := []data.Interval{}
-	r.R().SetResult(response).Get(getDJPath() + "all-intervals")
+	r.R().SetResult(&response).Get(getDJPath() + "/all-intervals")
 
 	return response
 }
