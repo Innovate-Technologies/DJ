@@ -4,6 +4,8 @@ import (
 	"sync"
 	"time"
 
+	"fmt"
+
 	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/cron"
 	"github.com/innovate-technologies/DJ/data"
@@ -71,6 +73,7 @@ func playSong(song data.Song) {
 }
 
 func updateEngines() {
+	fmt.Println("New songs, calling engine!")
 	queueMutex.Lock()
 	engine.PutQueue(queue)
 	queueMutex.Unlock()
