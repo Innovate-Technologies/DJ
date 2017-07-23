@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	dummyengine "git.innovatete.ch/server/Go-DROdio"
 	"github.com/chuckpreslar/emission"
 	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/config"
 	"github.com/innovate-technologies/DJ/cron"
-	dummyengine "github.com/innovate-technologies/dummy-dj-engine"
 )
 
 var (
@@ -39,6 +39,8 @@ func main() {
 	cron.GetInstance()
 
 	ReloadClocks()
+
+	go engine.Start(events)
 
 	startServer()
 }
