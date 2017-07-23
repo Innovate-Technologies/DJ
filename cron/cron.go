@@ -29,17 +29,16 @@ type Action struct {
 }
 
 var instance *Cron
-var once sync.Once
 
 // GetInstance gives you a instance of At
 func GetInstance() *Cron {
-	once.Do(func() {
+	if instance == nil {
 		instance = &Cron{
 			events:       Events,
 			actionsMutex: sync.Mutex{},
 		}
 		go instance.Run()
-	})
+	}
 	return instance
 }
 

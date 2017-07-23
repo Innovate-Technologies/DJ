@@ -24,17 +24,16 @@ type Action struct {
 }
 
 var instance *At
-var once sync.Once
 
 // GetInstance gives you a instance of At
 func GetInstance() *At {
-	once.Do(func() {
+	if instance == nil {
 		instance = &At{
 			events:       Events,
 			actionsMutex: sync.Mutex{},
 		}
 		go instance.Run()
-	})
+	}
 	return instance
 }
 
