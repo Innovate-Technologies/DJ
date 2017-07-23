@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"strconv"
 
 	"net/http"
 
@@ -35,6 +36,10 @@ func handleQueueEvents(socket socketio.Socket) {
 			events.On("queueUpdate", func() {
 				go sendCurrentSong(socket)
 				go sendQueue(socket)
+			})
+
+			events.On("timeRemaining", func(time int) {
+				go socket.Emit("timeRemaining", strconv.FormatInt(int64(time), 10))
 			})
 
 		} else {
