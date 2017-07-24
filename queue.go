@@ -2,7 +2,6 @@ package main
 
 import (
 	"sync"
-	"time"
 
 	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/cron"
@@ -40,19 +39,17 @@ func ReloadClocks() {
 	UpdateTimers()
 }
 
-// WatchClocks watches the queue to add songs when needed
-func WatchClocks() {
-	for {
-		queueMutex.Lock()
-		left := len(queue)
-		queueMutex.Unlock()
-		if left <= 5 {
-			LoadClocks()
-		}
-		time.Sleep(time.Second)
+// CheckQueue watches the queue to add songs when needed
+func CheckQueue() {
+	queueMutex.Lock()
+	left := len(queue)
+	queueMutex.Unlock()
+	if left <= 5 {
+		LoadClocks()
 	}
 }
 
+// UpdateTimers reloads the timers to match the new playlists
 func UpdateTimers() {
 	cron.GetInstance().RemoveAll()
 	at.GetInstance().RemoveAll()
@@ -69,6 +66,7 @@ func playSong(song data.Song) {
 	}
 	queueMutex.Unlock()
 	events.Emit("queueUpdate")
+	CheckQueue()
 }
 
 func updateEngines() {
