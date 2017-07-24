@@ -24,6 +24,8 @@ func startServer() {
 	e.POST("/api/:key/clocks/reload", postReload)
 	e.Any("/socket.io/*", echo.WrapHandler(io))
 	e.Use(checkKey)
+	e.Debug = false
+	e.HideBanner = true
 	e.Logger.Fatal(e.Start(":80"))
 }
 
