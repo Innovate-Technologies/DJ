@@ -2,7 +2,10 @@ package intervals
 
 import (
 	"math/rand"
+	"strconv"
 	"time"
+
+	"github.com/innovate-technologies/DJ/cron"
 
 	"github.com/innovate-technologies/DJ/at"
 	"github.com/innovate-technologies/DJ/data"
@@ -23,6 +26,7 @@ func PlaceIntervals(songs []data.Song) []data.Song {
 func SetReloads() {
 	allIntervals := itframe.GetAllIntervals()
 	a := at.GetInstance()
+	c := cron.GetInstance()
 
 	for _, interval := range allIntervals {
 		a.Add(at.Action{
@@ -33,18 +37,44 @@ func SetReloads() {
 			Event: "reloadQueue",
 			Time:  interval.End,
 		})
+		for _, day := range interval.Days {
+			c.Add(cron.Action{
+				Event:      "reloadQueue",
+				DayOfMonth: "*",
+				Month:      "*",
+				DayOfWeek:  strconv.Itoa(day),
+				Hour:       strconv.Itoa(interval.DayStart.Hour),
+				Minute:     strconv.Itoa(interval.DayStart.Minute),
+			})
+			c.Add(cron.Action{
+				Event:      "reloadQueue",
+				DayOfMonth: "*",
+				Month:      "*",
+				DayOfWeek:  strconv.Itoa(day),
+				Hour:       strconv.Itoa(interval.DayEnd.Hour),
+				Minute:     strconv.Itoa(interval.DayEnd.Minute),
+			})
+		}
 	}
 }
 
 func getCurrentIntervals() []data.Interval {
 	now := time.Now()
+	day := int(now.Weekday())
+	if day == 0 {
+		day = 7
+	}
 
 	allIntervals := itframe.GetAllIntervals()
 	currentIntervals := []data.Interval{}
 
 	for _, interval := range allIntervals {
-		if interval.Forever || (now.After(interval.Start) && now.Before(interval.End)) {
-			currentIntervals = append(currentIntervals, interval)
+		if (interval.Forever && now.After(interval.Start)) || (now.After(interval.Start) && now.Before(interval.End)) {
+			if sliceContains(interval.Days, day) {
+				if inBetween(interval.DayStart.Hour, interval.DayEnd.Hour, interval.DayStart.Minute, interval.DayEnd.Minute, now) {
+					currentIntervals = append(currentIntervals, interval)
+				}
+			}
 		}
 	}
 
@@ -120,4 +150,26 @@ func shuffle(vals []data.Song) {
 		vals[n-1], vals[randIndex] = vals[randIndex], vals[n-1]
 		vals = vals[:n-1]
 	}
+}
+
+func sliceContains(list []int, value int) bool {
+	for _, v := range list {
+		if v == value {
+			return true
+		}
+	}
+	return false
+}
+
+func inBetween(startHour, endHour, startMinute, endMinute int, now time.Time) bool {
+	if startHour < now.Hour() && now.Hour() < endHour {
+		return true
+	}
+	if startHour == now.Hour() && startMinute <= now.Minute() {
+		return true
+	}
+	if endHour == now.Hour() && endMinute >= now.Minute() {
+		return true
+	}
+	return false
 }
