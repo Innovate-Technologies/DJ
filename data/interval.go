@@ -2,6 +2,7 @@ package data
 
 import "time"
 
+//Interval is the data of an interval in the database
 type Interval struct {
 	Username     string    `json:"username"`
 	Songs        []Song    `json:"songs"`
