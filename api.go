@@ -13,7 +13,6 @@ import (
 
 func startServer() {
 	io, err := socketio.NewServer(nil)
-	io.
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -87,7 +86,6 @@ func checkKey(next echo.HandlerFunc) echo.HandlerFunc {
 		return next(c)
 	}
 }
-
 
 func getRoot(c echo.Context) error {
 	return c.String(http.StatusOK, "DJ Server")
