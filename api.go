@@ -68,7 +68,7 @@ func sendQueue(socket socketio.Socket) {
 
 func socketioCORS(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if c.Path()[:9] == "/socket.io/" {
+		if c.Path()[:11] == "/socket.io/" {
 			if origin := c.Request().Header.Get("Origin"); origin != "" {
 				c.Response().Header().Set("Access-Control-Allow-Credential", "true")
 				c.Response().Header().Set("Access-Control-Allow-Origin", origin)
