@@ -19,6 +19,7 @@ func startServer() {
 	}
 	io.Of("/queueEvents").On("connection", handleQueueEvents)
 	e := echo.New()
+	e.GET("/", getRoot)
 	e.GET("/api/:key/songs/queue", getQueue)
 	e.GET("/api/:key/songs/current", getCurrentSong)
 	e.POST("/api/:key/songs/skip", postSkip)
@@ -85,6 +86,11 @@ func checkKey(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 		return next(c)
 	}
+}
+
+
+func getRoot(c echo.Context) error {
+	return c.String(http.StatusOK, "DJ Server")
 }
 
 func getQueue(c echo.Context) error {
