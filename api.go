@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"strconv"
+	"strings"
 
 	"net/http"
 
@@ -68,7 +69,7 @@ func sendQueue(socket socketio.Socket) {
 
 func socketioCORS(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if c.Path()[:11] == "/socket.io/" {
+		if strings.HasPrefix(c.Path(), "/socket.io/") {
 			if origin := c.Request().Header.Get("Origin"); origin != "" {
 				c.Response().Header().Set("Access-Control-Allow-Credentials", "true")
 				c.Response().Header().Set("Access-Control-Allow-Origin", origin)
@@ -80,7 +81,7 @@ func socketioCORS(next echo.HandlerFunc) echo.HandlerFunc {
 
 func checkKey(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if c.Path()[:5] == "/api/" && c.Param("key") != conf.APIKey {
+		if strings.HasPrefix(c.Path(), "/api/") && c.Param("key") != conf.APIKey {
 			return c.JSON(http.StatusUnauthorized, map[string]string{"error": "bad API key"})
 		}
 		return next(c)
