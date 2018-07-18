@@ -92,7 +92,11 @@ func getSongsForTag(tag string, num int) []data.Song {
 	}
 
 	for len(allSongs) < num {
-		allSongs = append(allSongs, allSongs[rand.Intn(len(allSongs)-1)])
+		if len(allSongs) > 1 {
+			allSongs = append(allSongs, allSongs[rand.Intn(len(allSongs)-1)])
+		} else {
+			allSongs = append(allSongs, allSongs[0])
+		}
 	}
 	return allSongs
 }
