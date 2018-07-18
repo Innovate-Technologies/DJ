@@ -4,4 +4,4 @@ go:
   - 1.x
 
 after_success:
- -  curl -X POST -F token=$GITLAB_TOKEN -F ref="GitHub build" https://git.innovatete.ch/api/v4/projects/43/trigger/pipeline
+ -  curl -X POST -F token=$GITLAB_TOKEN -F ref=$TRAVIS_BRANCH https://git.innovatete.ch/api/v4/projects/43/trigger/pipeline
