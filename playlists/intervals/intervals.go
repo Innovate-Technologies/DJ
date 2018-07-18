@@ -12,6 +12,16 @@ import (
 	"github.com/innovate-technologies/DJ/itframe"
 )
 
+type itframeAPI interface {
+	GetAllIntervals() []data.Interval
+}
+
+var api itframeAPI
+
+func init() {
+	api = itframe.New()
+}
+
 // PlaceIntervals places the intervals in a song slice
 func PlaceIntervals(songs []data.Song) []data.Song {
 	intervals := getCurrentIntervals()
@@ -24,7 +34,7 @@ func PlaceIntervals(songs []data.Song) []data.Song {
 
 // SetReloads set the queue to reload when an interval stops playing
 func SetReloads() {
-	allIntervals := itframe.GetAllIntervals()
+	allIntervals := api.GetAllIntervals()
 	a := at.GetInstance()
 	c := cron.GetInstance()
 
@@ -65,7 +75,7 @@ func getCurrentIntervals() []data.Interval {
 		day = 7
 	}
 
-	allIntervals := itframe.GetAllIntervals()
+	allIntervals := api.GetAllIntervals()
 	currentIntervals := []data.Interval{}
 
 	for _, interval := range allIntervals {

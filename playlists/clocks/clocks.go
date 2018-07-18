@@ -10,6 +10,17 @@ import (
 	"github.com/innovate-technologies/DJ/itframe"
 )
 
+type itframeAPI interface {
+	GetAllClocks() []data.Clock
+	GetAllSongsForTag(tag string) []data.Song
+}
+
+var api itframeAPI
+
+func init() {
+	api = itframe.New()
+}
+
 // GetSongs returns 100 songs for the current clock
 func GetSongs() (songs []data.Song) {
 	songs = []data.Song{}
@@ -24,7 +35,7 @@ func GetSongs() (songs []data.Song) {
 
 // SetReloads sets the reload events when a new clock has to start
 func SetReloads() {
-	allClocks := itframe.GetAllClocks()
+	allClocks := api.GetAllClocks()
 	c := cron.GetInstance()
 
 	for _, clock := range allClocks {
@@ -47,7 +58,7 @@ func getCurrentClock() data.Clock {
 		day = 7
 	}
 
-	allClocks := itframe.GetAllClocks()
+	allClocks := api.GetAllClocks()
 
 	for _, clock := range allClocks {
 		if clock.Start.DayOfWeek < day && clock.End.DayOfWeek > day {
@@ -74,7 +85,7 @@ func getCurrentClock() data.Clock {
 }
 
 func getSongsForTag(tag string, num int) []data.Song {
-	allSongs := itframe.GetAllSongsForTag(tag)
+	allSongs := api.GetAllSongsForTag(tag)
 	shuffle(allSongs)
 	if len(allSongs) >= num {
 		return allSongs[:num]
