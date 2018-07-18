@@ -16,11 +16,7 @@ type itframeAPI interface {
 	GetAllIntervals() []data.Interval
 }
 
-var api itframeAPI
-
-func init() {
-	api = itframe.New()
-}
+var api itframeAPI = itframe.New()
 
 // PlaceIntervals places the intervals in a song slice
 func PlaceIntervals(songs []data.Song) []data.Song {

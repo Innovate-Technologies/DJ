@@ -15,11 +15,7 @@ type itframeAPI interface {
 	GetAllSongsForTag(tag string) []data.Song
 }
 
-var api itframeAPI
-
-func init() {
-	api = itframe.New()
-}
+var api itframeAPI = itframe.New()
 
 // GetSongs returns 100 songs for the current clock
 func GetSongs() (songs []data.Song) {
