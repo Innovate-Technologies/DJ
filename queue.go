@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"sync"
 
 	"github.com/innovate-technologies/DJ/at"
@@ -16,7 +17,7 @@ var (
 	currentSong data.Song
 )
 
-func init() {
+func initQueueEvents() {
 	events.On("playSong", playSong)
 	events.On("reloadQueue", ReloadClocks)
 	events.On("queueUpdate", updateEngines)
@@ -45,6 +46,7 @@ func CheckQueue() {
 	left := len(queue)
 	queueMutex.Unlock()
 	if left <= 5 {
+		log.Println("Loading more songs")
 		LoadClocks()
 	}
 }
@@ -70,6 +72,7 @@ func playSong(song data.Song) {
 }
 
 func updateEngines() {
+	log.Println("Sending queue to engine")
 	queueMutex.Lock()
 	engine.PutQueue(queue)
 	queueMutex.Unlock()

@@ -30,6 +30,8 @@ func main() {
 
 	conf = *config.GetConfig()
 
+	initQueueEvents()
+
 	engine = dummyengine.New()
 
 	// init At and cron
