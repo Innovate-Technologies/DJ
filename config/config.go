@@ -14,19 +14,21 @@ type Config struct {
 	Hostname string                       `json:"hostname"`
 	Internal map[string]map[string]string `json:"internal"`
 	APIKey   string                       `json:"apikey"`
-	Streams  []struct {
-		Stream   string `json:"stream"`
-		Password string `json:"password,omitempty"`
-		Relay    string `json:"relay,omitempty"`
-		Primary  bool   `json:"primary,omitempty"`
-	} `json:"streams"`
-	DJ struct {
+	Streams  []StreamConfig               `json:"streams"`
+	DJ       struct {
 		Enabled    bool `json:"enabled"`
 		FadeLength int  `json:"fadeLength"`
 	} `json:"DJ"`
 	Input struct {
 		SHOUTcast int `json:"SHOUTcast"`
 	} `json:"input"`
+}
+
+type StreamConfig struct {
+	Stream   string `json:"stream"`
+	Password string `json:"password,omitempty"`
+	Relay    string `json:"relay,omitempty"`
+	Primary  bool   `json:"primary,omitempty"`
 }
 
 var r = resty.New().SetHostURL("https://itframe.innovatete.ch/") // TO DO: make host changable
