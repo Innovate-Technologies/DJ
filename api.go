@@ -63,7 +63,7 @@ func sendCurrentSong(socket socketio.Socket) {
 func sendQueue(socket socketio.Socket) {
 	queueMutex.Lock()
 	jsonOut, _ := json.Marshal(queue)
-	socket.Emit("currentSong", string(jsonOut))
+	socket.Emit("queue", string(jsonOut))
 	queueMutex.Unlock()
 }
 
