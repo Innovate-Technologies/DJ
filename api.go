@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"strconv"
 	"strings"
@@ -17,7 +16,7 @@ func startServer() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	io.Of("/queueEvents").On("connection", handleQueueEvents)
+	io.On("connection", handleQueueEvents)
 	e := echo.New()
 	e.GET("/", getRoot)
 	e.GET("/api/:key/songs/queue", getQueue)
@@ -29,7 +28,7 @@ func startServer() {
 	e.Use(socketioCORS)
 	e.Debug = false
 	e.HideBanner = true
-	e.Logger.Fatal(e.Start(":80"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
 
 func handleQueueEvents(socket socketio.Socket) {
@@ -55,15 +54,13 @@ func handleQueueEvents(socket socketio.Socket) {
 
 func sendCurrentSong(socket socketio.Socket) {
 	queueMutex.Lock()
-	jsonOut, _ := json.Marshal(currentSong)
-	socket.Emit("currentSong", string(jsonOut))
+	socket.Emit("currentSong", currentSong)
 	queueMutex.Unlock()
 }
 
 func sendQueue(socket socketio.Socket) {
 	queueMutex.Lock()
-	jsonOut, _ := json.Marshal(queue)
-	socket.Emit("queue", string(jsonOut))
+	socket.Emit("queue", queue)
 	queueMutex.Unlock()
 }
 
