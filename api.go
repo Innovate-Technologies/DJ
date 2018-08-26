@@ -28,7 +28,7 @@ func startServer() {
 	e.Use(socketioCORS)
 	e.Debug = false
 	e.HideBanner = true
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":80"))
 }
 
 func handleQueueEvents(socket socketio.Socket) {
