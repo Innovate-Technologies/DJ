@@ -69,7 +69,7 @@ func getCurrentClock() data.Clock {
 				if clock.Start.Hour < now.Hour() && clock.End.Hour > now.Hour() {
 					// ] hour [
 					return clock
-				} else if (clock.Start.Hour == now.Hour() && clock.Start.Minute >= now.Minute()) || (clock.End.Hour == now.Hour() && clock.End.Minute >= now.Minute()) {
+				} else if (clock.Start.Hour == now.Hour() && clock.Start.Minute <= now.Minute()) || (clock.End.Hour == now.Hour() && clock.End.Minute >= now.Minute()) {
 					// [ day ] [ hour ] [ minute ]
 					return clock
 				}
