@@ -24,10 +24,12 @@ type Song struct {
 		Username string `json:"username"`
 		V        int    `json:"__v"`
 	} `json:"tags"`
-	ProcessedURLS []struct {
-		Bitrate int    `json:"bitrate"`
-		URL     string `json:"url"`
-	} `json:"processedURLS"`
-	Type             string `json:"type"`
-	IgnoreSeperation bool   `json:"ignoreSeperation"`
+	ProcessedURLS    []ProcessedURL `json:"processedURLS"`
+	Type             string         `json:"type"`
+	IgnoreSeperation bool           `json:"ignoreSeperation"`
+}
+
+type ProcessedURL struct {
+	Bitrate int    `json:"bitrate"`
+	URL     string `json:"url"`
 }
