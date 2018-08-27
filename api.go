@@ -9,6 +9,7 @@ import (
 
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/innovate-technologies/DJ/data"
+	"github.com/jinzhu/copier"
 	"github.com/labstack/echo"
 )
 
@@ -55,7 +56,8 @@ func handleQueueEvents(socket socketio.Socket) {
 
 func sendCurrentSong(socket socketio.Socket) {
 	queueMutex.Lock()
-	song := currentSong
+	song := data.Song{}
+	copier.Copy(&song, currentSong)
 	song.ProcessedURLS = []data.ProcessedURL{}
 	socket.Emit("currentSong", song)
 	queueMutex.Unlock()
@@ -63,7 +65,8 @@ func sendCurrentSong(socket socketio.Socket) {
 
 func sendQueue(socket socketio.Socket) {
 	queueMutex.Lock()
-	songs := queue
+	songs := []data.Song{}
+	copier.Copy(&songs, queue)
 	for id := range songs {
 		songs[id].ProcessedURLS = []data.ProcessedURL{}
 	}
@@ -97,7 +100,8 @@ func getRoot(c echo.Context) error {
 }
 
 func getQueue(c echo.Context) error {
-	songs := queue
+	songs := []data.Song{}
+	copier.Copy(&songs, queue)
 	for id := range songs {
 		songs[id].ProcessedURLS = []data.ProcessedURL{}
 	}
@@ -105,7 +109,8 @@ func getQueue(c echo.Context) error {
 }
 
 func getCurrentSong(c echo.Context) error {
-	song := currentSong
+	song := data.Song{}
+	copier.Copy(&song, currentSong)
 	song.ProcessedURLS = []data.ProcessedURL{}
 	return c.JSON(http.StatusOK, song)
 }
