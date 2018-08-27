@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"strconv"
 	"strings"
@@ -9,7 +10,6 @@ import (
 
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/innovate-technologies/DJ/data"
-	"github.com/jinzhu/copier"
 	"github.com/labstack/echo"
 )
 
@@ -57,7 +57,8 @@ func handleQueueEvents(socket socketio.Socket) {
 func sendCurrentSong(socket socketio.Socket) {
 	queueMutex.Lock()
 	song := data.Song{}
-	copier.Copy(&song, currentSong)
+	b, _ := json.Marshal(currentSong)
+	json.Unmarshal(b, &song)
 	song.ProcessedURLS = []data.ProcessedURL{}
 	socket.Emit("currentSong", song)
 	queueMutex.Unlock()
@@ -66,7 +67,8 @@ func sendCurrentSong(socket socketio.Socket) {
 func sendQueue(socket socketio.Socket) {
 	queueMutex.Lock()
 	songs := []data.Song{}
-	copier.Copy(&songs, queue)
+	b, _ := json.Marshal(queue)
+	json.Unmarshal(b, &songs)
 	for id := range songs {
 		songs[id].ProcessedURLS = []data.ProcessedURL{}
 	}
@@ -101,7 +103,8 @@ func getRoot(c echo.Context) error {
 
 func getQueue(c echo.Context) error {
 	songs := []data.Song{}
-	copier.Copy(&songs, queue)
+	b, _ := json.Marshal(queue)
+	json.Unmarshal(b, &songs)
 	for id := range songs {
 		songs[id].ProcessedURLS = []data.ProcessedURL{}
 	}
@@ -110,7 +113,8 @@ func getQueue(c echo.Context) error {
 
 func getCurrentSong(c echo.Context) error {
 	song := data.Song{}
-	copier.Copy(&song, currentSong)
+	b, _ := json.Marshal(currentSong)
+	json.Unmarshal(b, &song)
 	song.ProcessedURLS = []data.ProcessedURL{}
 	return c.JSON(http.StatusOK, song)
 }
